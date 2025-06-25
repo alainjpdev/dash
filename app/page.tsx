@@ -43,7 +43,7 @@ export default function HomePage() {
         </section>
 
         {/* 🆕 Explore Section (galería + texto) */}
-     {/* }   <ExploreSection />*/}
+     <ExploreSection />
 
         {/* Feature Section */}
         {/*<section className="flex flex-col md:flex-row gap-12 items-center px-6 pb-24 max-w-5xl">
@@ -65,7 +65,7 @@ export default function HomePage() {
             />
           </div>
         </section>*/}
-      {/*}  <BrowseByDestination />*/}
+      <BrowseByDestination />
       </main>
     </>
   );

@@ -1,78 +1,67 @@
 'use client';
 
 import Image from 'next/image';
+import { Heart } from 'lucide-react';
 
-interface CarCardProps {
-  image: string;
+export interface Vehicle {
+  id: string;
+  brand: string;
   model: string;
-  year: string;
-  rating: string;
-  trips: number;
+  year: number;
+  rating: number;
   location: string;
-  price: string;
-  originalPrice?: string;
-  discountText?: string;
+  price_per_day: number;
+  image_urls: string[] | string;
 }
 
-const carList: CarCardProps[] = [
-  {
-    image: '/images/tesla-y.jpg',
-    model: 'Tesla Model Y',
-    year: '2024',
-    rating: '5.0',
-    trips: 45,
-    location: 'Burlingame',
-    price: '$468 total',
-  },
-  {
-    image: '/images/tesla-s.jpg',
-    model: 'Tesla Model S',
-    year: '2023',
-    rating: '5.0',
-    trips: 84,
-    location: 'Burlingame',
-    price: '$860 total',
-    originalPrice: '$931',
-    discountText: 'Save $72',
-  },
-];
+const CarCard = ({ car }: { car: Vehicle }) => {
+  const images = typeof car.image_urls === 'string' ? JSON.parse(car.image_urls) : car.image_urls;
 
-export default function CarCardList(): JSX.Element {
   return (
-    <>
-      {carList.map((car, index) => (
-        <div
-          key={index}
-          className="border rounded-xl overflow-hidden flex flex-col md:flex-row bg-white shadow-sm"
-        >
+    <div className="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col sm:flex-row relative hover:shadow-md transition">
+      {/* Image section */}
+      <div className="relative w-full sm:w-[300px] aspect-video sm:aspect-auto sm:h-[200px]">
+        {images?.[0] ? (
           <Image
-            src={car.image}
-            alt={car.model}
-            width={350}
-            height={200}
-            className="object-cover w-full md:w-1/2"
+            src={images[0]}
+            alt={`${car.brand} ${car.model}`}
+            fill
+            className="object-cover"
           />
-          <div className="p-4 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-semibold">{`${car.model} ${car.year}`}</h3>
-              <p className="text-sm text-gray-600">
-                ⭐ {car.rating} ({car.trips} trips) · 📍 {car.location}
-              </p>
-            </div>
-            <div className="mt-4">
-              {car.originalPrice && (
-                <p className="text-sm line-through text-gray-400">{car.originalPrice}</p>
-              )}
-              <p className="font-bold">{car.price}</p>
-              {car.discountText && (
-                <span className="inline-block mt-1 text-green-600 text-sm font-medium bg-green-100 px-2 py-0.5 rounded">
-                  {car.discountText}
-                </span>
-              )}
-            </div>
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+            No image
           </div>
+        )}
+
+        {/* Heart icon */}
+        <button className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-sm hover:bg-gray-100">
+          <Heart className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+
+      {/* Info section */}
+      <div className="p-4 flex flex-col justify-between flex-1">
+        <div>
+          <h3 className="text-base font-semibold leading-tight">
+            {car.brand} {car.model} {car.year}
+          </h3>
+          <p className="text-sm text-gray-600 mt-1">
+            ⭐ {car.rating.toFixed(1)} · 📍 {car.location}
+          </p>
+          <p className="text-sm text-gray-500 mt-1">Jul 9 – 12</p> {/* Puedes hacer esto dinámico */}
         </div>
-      ))}
-    </>
+
+        <div className="mt-4 text-right">
+          <p className="text-lg font-semibold">
+            ${car.price_per_day * 3}{' '}
+            <span className="text-sm font-normal text-gray-600">total</span>
+          </p>
+          <p className="text-xs text-gray-400">Before taxes</p>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default CarCard;

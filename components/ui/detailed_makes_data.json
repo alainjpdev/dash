@@ -1,0 +1,112 @@
+[
+  {
+    "id": "am_general",
+    "name": "AM General",
+    "country": "USA"
+  },
+  {
+    "id": "acura",
+    "name": "Acura",
+    "country": "Japan"
+  },
+  {
+    "id": "alfa_romeo",
+    "name": "Alfa-Romeo",
+    "country": "Italy"
+  },
+  {
+    "id": "amc",
+    "name": "Amc",
+    "country": "USA"
+  },
+  {
+    "id": "aston_martin",
+    "name": "Aston Martin",
+    "country": "UK"
+  },
+  {
+    "id": "audi",
+    "name": "Audi",
+    "country": "Germany"
+  },
+  {
+    "id": "austin_healy",
+    "name": "Austin-healy",
+    "country": "UK"
+  },
+  {
+    "id": "bmw",
+    "name": "BMW",
+    "country": "Germany"
+  },
+  {
+    "id": "bentley",
+    "name": "Bentley",
+    "country": "UK"
+  },
+  {
+    "id": "buick",
+    "name": "Buick",
+    "country": "USA"
+  },
+  {
+    "id": "cadillac",
+    "name": "Cadillac",
+    "country": "USA"
+  },
+  {
+    "id": "can_am",
+    "name": "Can-Am",
+    "country": "Canada"
+  },
+  {
+    "id": "chevrolet",
+    "name": "Chevrolet",
+    "country": "USA"
+  },
+  {
+    "id": "chrysler",
+    "name": "Chrysler",
+    "country": "USA"
+  },
+  {
+    "id": "delorean",
+    "name": "DeLorean",
+    "country": "Ireland"
+  },
+  {
+    "id": "dodge",
+    "name": "Dodge",
+    "country": "USA"
+  },
+  {
+    "id": "ferrari",
+    "name": "Ferrari",
+    "country": "Italy"
+  },
+  {
+    "id": "fiat",
+    "name": "Fiat",
+    "country": "Italy"
+  },
+  {
+    "id": "fisker",
+    "name": "Fisker",
+    "country": "USA"
+  },
+  {
+    "id": "ford",
+    "name": "Ford",
+    "country": "USA"
+  },
+  {
+    "id": "freightliner",
+    "name": "Freightliner",
+    "country": "USA"
+  },
+  {
+    "id": "gmc",
+    "name": "GMC",
+    "country": "USA"
+  }
+]

@@ -9,12 +9,22 @@ type Destination = {
 };
 
 const destinations: Destination[] = [
-  { name: 'Los Angeles', icon: '/icons/los-angeles.svg' },
-  { name: 'Honolulu', icon: '/icons/honolulu.svg' },
-  { name: 'Paris', icon: '/icons/paris.svg' },
-  { name: 'Sydney', icon: '/icons/sydney.svg' },
-  { name: 'London', icon: '/icons/london.svg' },
-  { name: 'Toronto', icon: '/icons/toronto.svg' },
+  {
+    name: '',
+    icon: 'https://awgdyinecxbnloehjgxu.supabase.co/storage/v1/object/public/media/logos/cancun.png',
+  },
+  {
+    name: '',
+    icon: 'https://awgdyinecxbnloehjgxu.supabase.co/storage/v1/object/public/media/logos/playadelcarmen.png',
+  },
+  {
+    name: '',
+    icon: 'https://awgdyinecxbnloehjgxu.supabase.co/storage/v1/object/public/media/logos/tulum.png',
+  },
+  {
+    name: '',
+    icon: 'https://awgdyinecxbnloehjgxu.supabase.co/storage/v1/object/public/media/logos/puerto.png',
+  },
 ];
 
 export default function BrowseByDestination(): JSX.Element {
@@ -22,25 +32,26 @@ export default function BrowseByDestination(): JSX.Element {
     <section className="w-full px-6 py-16 flex flex-col items-center text-center">
       <h2 className="text-xl font-semibold mb-8">Browse by destination</h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-16">
+      {/* Grid completo responsive */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full max-w-7xl mb-16">
         {destinations.map((dest, index) => (
           <div
             key={index}
-            className="border rounded-lg p-4 flex flex-col items-center hover:shadow transition"
+            className="border rounded-lg p-6 flex flex-col items-center hover:shadow transition"
           >
             <Image
               src={dest.icon}
               alt={dest.name}
-              width={64}
-              height={64}
-              className="mb-3"
+              width={120}
+              height={120}
+              className="mb-4"
             />
-            <span className="text-sm font-medium">{dest.name}</span>
+            <span className="text-base font-medium">{dest.name}</span>
           </div>
         ))}
       </div>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <div className="max-w-xl">
         <h3 className="text-3xl md:text-4xl font-bold mb-4">
           <span className="relative inline-block">

@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverActions: true, // Solo deja esto
+    serverActions: true, // Solo deja esto si estás usando Server Actions
+  },
+  images: {
+    domains: ['awgdyinecxbnloehjgxu.supabase.co'],
   },
 };
 
