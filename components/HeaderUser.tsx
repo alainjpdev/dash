@@ -1,85 +1,79 @@
 'use client';
 
 import { useUser, useClerk } from '@clerk/nextjs';
-import { LogOut, AlertCircle } from 'lucide-react';
+import { LogOut } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HeaderUser() {
   const { user, isLoaded, isSignedIn } = useUser();
   const { signOut } = useClerk();
 
   const handleSignOut = async () => {
-    console.log('Sign out clicked');
     try {
-      await signOut(); // Cierra sesión
-      window.location.href = '/'; // Redirige manualmente a la home
+      await signOut();
+      window.location.href = '/public';
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.error('Error signing out:', error);
     }
   };
 
   if (!isLoaded) {
     return (
-      <div className="flex items-center space-x-3 p-2 rounded-lg">
-        <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
-        <div className="flex-1 min-w-0">
-          <div className="w-24 h-4 bg-gray-200 rounded animate-pulse mb-1" />
-          <div className="w-16 h-3 bg-gray-200 rounded animate-pulse" />
-        </div>
-        <div className="w-6 h-6 bg-gray-200 rounded animate-pulse" />
-      </div>
+      <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
     );
   }
 
+  // 🔴 Mostrar solo botón "Sign In" si no hay sesión
   if (!isSignedIn || !user) {
     return (
-      <div className="flex items-center space-x-3 p-2 rounded-lg bg-red-50 border border-red-200">
-        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-          <AlertCircle className="h-4 w-4 text-red-600" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-red-800">Not signed in</p>
-          <p className="text-xs text-red-600">Please refresh the page</p>
-        </div>
-      </div>
+      <Link
+        href="/sign-in"
+        className="text-sm font-medium px-4 py-2 border border-gray-800 rounded-full hover:bg-gray-100 transition"
+      >
+        Sign In
+      </Link>
     );
   }
 
   const displayName =
     user.fullName ||
-    (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : null) ||
-    user.firstName ||
+    `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ||
     user.emailAddresses[0]?.emailAddress ||
     'User';
 
-  const initials = user.firstName && user.lastName
-    ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
-    : user.firstName
+  const email = user.emailAddresses[0]?.emailAddress || 'No email';
+
+  const initials =
+    user.firstName && user.lastName
+      ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+      : user.firstName
       ? user.firstName[0].toUpperCase()
       : user.emailAddresses[0]?.emailAddress[0]?.toUpperCase() || 'U';
 
-  const email = user.emailAddresses[0]?.emailAddress || 'No email';
-
   return (
-    <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-        <span className="text-white text-sm font-medium">{initials}</span>
+    <div className="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 transition-colors">
+      {/* Avatar circle */}
+      <div className="w-8 h-8 bg-gradient-to-tr from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+        {initials}
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate" title={displayName}>
+      {/* Info */}
+      <div className="hidden md:flex flex-col text-left max-w-[160px] truncate">
+        <span className="text-sm font-medium text-gray-900 truncate" title={displayName}>
           {displayName}
-        </p>
-        <p className="text-xs text-gray-500 truncate" title={email}>
+        </span>
+        <span className="text-xs text-gray-500 truncate" title={email}>
           {email}
-        </p>
+        </span>
       </div>
 
+      {/* Sign out button */}
       <button
         onClick={handleSignOut}
-        className="p-1 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors flex-shrink-0"
         title="Sign out"
+        className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition"
       >
-        <LogOut className="h-4 w-4" />
+        <LogOut className="w-4 h-4" />
       </button>
     </div>
   );

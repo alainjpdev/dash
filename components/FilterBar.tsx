@@ -8,7 +8,6 @@ import MakeFilter from './ui/MakeFilter';
 import DeliverToMeFilter from './ui/DeliverToMeFilter';
 import { Filters } from '@/lib/types';
 
-// Valores por defecto para detectar cambios
 const DEFAULT_FILTERS: Filters = {
   priceRange: [300, 2500],
   vehicleTypes: [],
@@ -60,7 +59,7 @@ export default function FilterBar({ filters, setFilters }: FilterBarProps) {
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3 bg-white mt-[64px] z-10 relative">
+    <div className="flex flex-wrap items-center gap-2 border-b px-4 py-2.5 bg-white mt-2 z-10 relative">
       {filtersList.map((filter, index) => {
         const isActive =
           filter.label === 'Daily price'
@@ -74,6 +73,8 @@ export default function FilterBar({ filters, setFilters }: FilterBarProps) {
             ? filters.delivery
             : false;
 
+        const isOpen = activePopup === filter.label;
+
         return (
           <div
             key={index}
@@ -81,16 +82,14 @@ export default function FilterBar({ filters, setFilters }: FilterBarProps) {
             className="relative"
           >
             <button
-              className={`border rounded-full px-4 py-2 text-sm transition ${
-                isActive
-                  ? 'bg-indigo-100 border-indigo-500 text-indigo-700'
-                  : 'hover:bg-gray-100'
-              } ${activePopup === filter.label ? 'bg-gray-100' : ''}`}
               onClick={() =>
                 setActivePopup((prev) =>
                   prev === filter.label ? null : filter.label
                 )
               }
+              className={`border rounded-full px-4 py-2 text-sm transition
+                ${isActive ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-gray-300 text-gray-700'}
+                ${isOpen ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
             >
               {filter.label === 'All filters' ? (
                 <div className="flex items-center gap-1">
@@ -102,7 +101,7 @@ export default function FilterBar({ filters, setFilters }: FilterBarProps) {
               )}
             </button>
 
-            {activePopup === filter.label && (
+            {isOpen && (
               <div className="absolute top-12 left-0 z-50">{filter.component}</div>
             )}
           </div>

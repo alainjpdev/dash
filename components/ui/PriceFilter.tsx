@@ -35,11 +35,13 @@ export default function PriceFilter({
     setFilters((prev) => ({ ...prev, priceRange: defaultRange }));
   };
 
+  const formatPrice = (num: number) => `$${num.toLocaleString('en-US')}`;
+
   return (
     <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-xl space-y-4">
       <h3 className="text-center text-lg font-semibold">Daily price</h3>
-      <p className="text-sm text-center">
-        ${range[0]} – ${range[1]}+/day
+      <p className="text-sm text-center text-gray-700">
+        {formatPrice(range[0])} – {formatPrice(range[1])}+ /day
       </p>
 
       <Slider

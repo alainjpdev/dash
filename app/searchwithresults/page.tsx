@@ -1,26 +1,39 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import CompactSearchBar from '@/components/CompactSearchBar';
 import FilterBar from '@/components/FilterBar';
+import MobileFilterBar from '@/components/MobileFilterBar';
 import CarCardList from '@/components/CarCardList';
 import MapView from '@/components/MapView';
 import { MapPin } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { Vehicle, Filters } from '@/lib/types';
+import { useMediaQuery } from 'react-responsive';
+import MobileTopBar from '@/components/MobileTopBar';
 
+// Hook para evitar hydration mismatch
+function useHasMounted() {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  return hasMounted;
+}
 
 export default function SearchWithResultsPage() {
+  const hasMounted = useHasMounted();
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   const [showMap, setShowMap] = useState(false);
   const [cars, setCars] = useState<Vehicle[]>([]);
   const [filters, setFilters] = useState<Filters>({
-    priceRange: [0, 2000],
+    priceRange: [300, 2500],
     vehicleTypes: [],
     brands: [],
     delivery: false,
   });
-
-  const constraintsRef = useRef(null);
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -31,7 +44,6 @@ export default function SearchWithResultsPage() {
         setCars(data as Vehicle[]);
       }
     };
-
     fetchCars();
   }, []);
 
@@ -46,7 +58,7 @@ export default function SearchWithResultsPage() {
 
     const matchesBrand =
       filters.brands.length === 0 ||
-      filters.brands.includes(car.brand); // ✅ Corregido: 'brand' en lugar de 'make'
+      filters.brands.includes(car.brand);
 
     const matchesDelivery =
       !filters.delivery || car.delivery_available === true;
@@ -54,26 +66,38 @@ export default function SearchWithResultsPage() {
     return inPriceRange && matchesType && matchesBrand && matchesDelivery;
   });
 
+  if (!hasMounted) return null;
+
   return (
-    <section className="w-full h-screen flex flex-col overflow-hidden">
+    <section className="w-full h-screen flex flex-col pt-[40px]">
       <Navbar />
-      <FilterBar filters={filters} setFilters={setFilters} />
+
+      {/* Mostrar solo una barra según pantalla */}
+      {hasMounted && isMobile && (
+        <MobileTopBar filters={filters} setFilters={setFilters} />
+      )}
+
+      {hasMounted && !isMobile && (
+        <>
+          {/*<div className="bg-white px-4 pt-3 pb-1 border-b shadow-sm">
+            <CompactSearchBar />
+          </div>*/}
+          <FilterBar filters={filters} setFilters={setFilters} />
+        </>
+      )}
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Car list - Desktop */}
         <div className="w-full lg:w-[50%] h-full overflow-y-auto p-6 space-y-8">
           <h2 className="text-xl font-semibold">{filteredCars.length}+ cars available</h2>
-          <p className="text-sm text-gray-500">These cars are located in and around Las Vegas.</p>
+          <p className="text-sm text-gray-500">These cars are located in and around Tulum.</p>
           <CarCardList cars={filteredCars} />
         </div>
 
-        {/* Map - Desktop */}
         <div className="hidden lg:block lg:w-[50%] h-full sticky top-0">
           <MapView />
         </div>
       </div>
 
-      {/* Mobile View with toggle */}
       {showMap && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto">
           <MapView />
@@ -86,7 +110,6 @@ export default function SearchWithResultsPage() {
         </div>
       )}
 
-      {/* Toggle Map Button - Mobile */}
       <button
         onClick={() => setShowMap(!showMap)}
         className="lg:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 shadow-md rounded-full p-3 z-50"

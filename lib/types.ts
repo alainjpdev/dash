@@ -26,3 +26,5 @@ export interface Vehicle {
     brands: string[];
     delivery: boolean;
   }
+  // lib/types.ts
+

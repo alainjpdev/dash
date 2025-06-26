@@ -5,9 +5,11 @@ console.log("✅ Clerk middleware running");
 
 export default authMiddleware({
   publicRoutes: [
-    '/', 
+    '/',
+    '/public', 
     '/sign-in(.*)', 
-    '/sign-up(.*)'
+    '/sign-up(.*)',
+    '/searchwithresults(.*)'
   ],
   ignoredRoutes: [
     '/api/webhook(.*)' // 🔥 Esto ignora todos los webhooks y los deja pasar
